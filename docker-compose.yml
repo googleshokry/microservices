@@ -1,0 +1,57 @@
+version: "3"
+services:
+  back_app:
+    depends_on:
+      - db
+    container_name: backendapp
+    restart: always
+    build:
+      context: microone
+      dockerfile: "Dockerfile"
+    ports:
+      - "3000"
+    environment:
+      - mongodb_url=mongodb://db_mongo/zumrafood
+      - PORT=3000
+    volumes:
+      - ./microone:/usr/src/app
+      - /usr/src/app/node_modules
+  #    networks:
+  #      - backend
+  gateway:
+    depends_on:
+      - db
+    restart: always
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    ports:
+      - "81:3000"
+    environment:
+      - mongodb_url=mongodb://db_mongo/gateway
+      - PORT=3000
+    volumes:
+      - ./gateway:/usr/src/app
+      - /usr/src/app/node_modules
+  #    networks:
+  #      - backend
+  #      - frontend
+  db:
+    image: mongo
+    container_name: db_mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+#    networks:
+#      - backend
+volumes:
+  mongodata:
+
+#networks:
+#  backend:
+#    driver: bridge
+#  frontend:
+#    external:
+#      name: infrastructure
+# not need network to link apps between services
