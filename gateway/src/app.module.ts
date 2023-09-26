@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ExchangeRateModule } from './exchange-rate/exchange-rate.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { ConfigModule } from '@nestjs/config';
+import {MailModule} from "./mail/mail.module";
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -15,6 +16,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     ExchangeRateModule,
     TransactionsModule,
+    MailModule
   ],
   controllers: [AppController],
   providers: [AppService],
